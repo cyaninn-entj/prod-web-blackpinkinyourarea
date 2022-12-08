@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <body>
+        <h1> PHP 페이지를 만들어 봅니다.</h1>
+        <?php
+            //header('Content-Type: text/html; charset=utf-8');
+                    
+            echo "Hello World!\n";
+
+            //mysql 접속 계정 정보 설정
+            $mysql_host = '3.39.87.50:3306';
+            $mysql_user = 'root';
+            $mysql_password = 'wpsl97';
+            $mysql_db = 'blackpink';
+
+            $conn = new mysqli($mysql_host, $mysql_user, $mysql_password, $mysql_db);
+            if($conn -> connect_error){
+                echo 'connection failed' . $conn -> connect_error;
+            }
+            echo 'Sucessfully connected to MYSQL';
+        ?>
+    </body>
+</html>
