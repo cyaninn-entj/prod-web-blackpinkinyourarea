@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./front-end
+    container_name: apache-php-server
+    volumes: 
+      - ./front-end:/var/www/html
+    ports:
+      - "80:80"
+
+  backend:
+    build: ./front-end
+    container_name: python-crawling-server
+    volumes: 
+      - ./back-end:/home/ubuntu

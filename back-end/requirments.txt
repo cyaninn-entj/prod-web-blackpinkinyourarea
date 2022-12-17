@@ -1,0 +1,3 @@
+instaloader
+boto3
+PyMySQL
