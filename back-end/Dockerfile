@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM python
 
 RUN apt-get update && apt-get install -y vim
 
