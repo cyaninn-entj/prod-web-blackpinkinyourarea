@@ -108,7 +108,7 @@ pipeline {
         // 젠킨스에 등록한 계정으로 ECR 에 이미지 푸시
         withDockerRegistry([credentialsId: "${dockerhubRegistryCredentail}", url:""]) {
           sh "docker push ${dockerhubRegistry}:frontend.${currentBuild.number}"
-          sh "docker push ${dockerhubRegistry}:frontendlatest"
+          sh "docker push ${dockerhubRegistry}:frontend.latest"
           // 10초 쉰 후에 다음 작업 이어나가도록 함
           sleep 10
         } 
