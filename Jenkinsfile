@@ -35,11 +35,10 @@ pipeline {
       }
     }
 
-    /*
+    //python-crawling-server build
     stage('backend - Docker Image Build') {
       steps {
-        // 도커 이미지 빌드
-        sh "cd /home/ubuntu/back-end"
+        sh "cd /back-end"
         sh "docker build . -t ${dockerhubRegistry}:backend.${currentBuild.number}"
         sh "docker build . -t ${dockerhubRegistry}:backend.latest"
       }
@@ -56,12 +55,12 @@ pipeline {
       }
     }  
 
+    //python-crawling-server push
     stage('backend - Docker Image Push') {
       steps {
-        // 젠킨스에 등록한 계정으로 ECR 에 이미지 푸시
-        withDockerRegistry([url: "https://${dockerhubRegistry}", credentialsId: "ecr:ap-northeast-2:${awsecrRegistryCredentail}"]) {
-          sh "docker push ${dockerhubRegistry}:${currentBuild.number}"
-          sh "docker push ${dockerhubRegistry}:latest"
+        withDockerRegistry([url: "https://${dockerhubRegistry}", credentialsId: "${dockerhubRegistryCredentail}"]) {
+          sh "docker push ${dockerhubRegistry}:backend.${currentBuild.number}"
+          sh "docker push ${dockerhubRegistry}:backend.latest"
           // 10초 쉰 후에 다음 작업 이어나가도록 함
           sleep 10
         } 
@@ -69,19 +68,22 @@ pipeline {
       post {
         failure {
           echo 'Docker Image Push failure'
-          sh "docker rmi ${awsecrRegistry}:${currentBuild.number}"
-          sh "docker rmi ${awsecrRegistry}:latest"
+          sh "docker rmi ${dockerhubRegistry}:backend.${currentBuild.number}"
+          sh "docker rmi ${dockerhubRegistry}:backend.latest"
           //slackSend (color: '#FF0000', message: "FAILED: Docker Image Push '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         }
         success {
           echo 'Docker Image Push success'
-          sh "docker rmi ${awsecrRegistry}:${currentBuild.number}"
-          sh "docker rmi ${awsecrRegistry}:latest"
+          sh "docker rmi ${dockerhubRegistry}:backend.${currentBuild.number}"
+          sh "docker rmi ${dockerhubRegistry}:backend.latest"
           //slackSend (color: '#0AC9FF', message: "SUCCESS: Docker Image Push '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         }
       }
     }
 
+
+
+    //php-apache-server build
     stage('frontend - Docker Image Build') {
       steps {
         // 도커 이미지 빌드
@@ -103,12 +105,13 @@ pipeline {
       }
     }  
 
+    //php-apache-server push
     stage('frontend - Docker Image Push') {
       steps {
         // 젠킨스에 등록한 계정으로 ECR 에 이미지 푸시
-        withDockerRegistry([url: "https://${dockerhubRegistry}", credentialsId: "ecr:ap-northeast-2:${awsecrRegistryCredentail}"]) {
-          sh "docker push ${dockerhubRegistry}:${currentBuild.number}"
-          sh "docker push ${dockerhubRegistry}:latest"
+        withDockerRegistry([url: "https://${dockerhubRegistry}", credentialsId: "${dockerhubRegistryCredentail}"]) {
+          sh "docker push ${dockerhubRegistry}:frontend.${currentBuild.number}"
+          sh "docker push ${dockerhubRegistry}:frontendlatest"
           // 10초 쉰 후에 다음 작업 이어나가도록 함
           sleep 10
         } 
@@ -116,14 +119,14 @@ pipeline {
       post {
         failure {
           echo 'Docker Image Push failure'
-          sh "docker rmi ${awsecrRegistry}:${currentBuild.number}"
-          sh "docker rmi ${awsecrRegistry}:latest"
+          sh "docker rmi ${dockerhubRegistry}:frontend.${currentBuild.number}"
+          sh "docker rmi ${dockerhubRegistry}:frontend.latest"
           //slackSend (color: '#FF0000', message: "FAILED: Docker Image Push '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         }
         success {
           echo 'Docker Image Push success'
-          sh "docker rmi ${awsecrRegistry}:${currentBuild.number}"
-          sh "docker rmi ${awsecrRegistry}:latest"
+          sh "docker rmi ${dockerhubRegistry}:frontend.${currentBuild.number}"
+          sh "docker rmi ${dockerhubRegistry}:frontend.latest"
           //slackSend (color: '#0AC9FF', message: "SUCCESS: Docker Image Push '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         }
       }
@@ -132,10 +135,7 @@ pipeline {
     // updated docker image 태그를 git push 
     stage('Deploy') { 
       steps {
-        // git 계정 로그인, 해당 레포지토리의 main 브랜치에서 클론
-        git credentialsId: githubCredential,
-            url: 'https://github.com/cyaninn-entj/mini-cicd-eks-project.git',
-            branch: 'main'  
+        sh ("ansible -i /home/ubuntu/prod-ansible/Inventory.ini -m ping prod") 
       } /*
       post {
           failure {
@@ -147,6 +147,6 @@ pipeline {
             slackSend (color: '#0AC9FF', message: "SUCCESS: K8S Manifest Update '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
           }
       } */
-    //}  
+    }  
   }
 }
