@@ -38,9 +38,8 @@ pipeline {
     //python-crawling-server build
     stage('backend - Docker Image Build') {
       steps {
-        sh "cd /back-end"
-        sh "docker build . -t ${dockerhubRegistry}:backend.${currentBuild.number}"
-        sh "docker build . -t ${dockerhubRegistry}:backend.latest"
+        sh "docker build ./back-end -t ${dockerhubRegistry}:backend.${currentBuild.number}"
+        sh "docker build ./back-end -t ${dockerhubRegistry}:backend.latest"
       }
       // 성공, 실패 시 슬랙에 알람오도록 설정
       post {
@@ -87,10 +86,8 @@ pipeline {
     stage('frontend - Docker Image Build') {
       steps {
         // 도커 이미지 빌드
-        sh "cd .."
-        sh "cd /front-end"
-        sh "docker build . -t ${dockerhubRegistry}:frontend.${currentBuild.number}"
-        sh "docker build . -t ${dockerhubRegistry}:frontend.latest"
+        sh "docker build ./front-end -t ${dockerhubRegistry}:frontend.${currentBuild.number}"
+        sh "docker build ./front-end -t ${dockerhubRegistry}:frontend.latest"
       }
       // 성공, 실패 시 슬랙에 알람오도록 설정
       post {

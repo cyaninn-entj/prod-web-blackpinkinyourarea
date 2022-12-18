@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   frontend:
-    build: ./front-end
+    iamge: cyaninn/prod-web-blackpinkinyourarea:frontend.lastest
     container_name: apache-php-server
     volumes: 
       - ./front-end:/var/www/html
@@ -10,7 +10,7 @@ services:
       - "80:80"
 
   backend:
-    build: ./front-end
+    iamge: cyaninn/prod-web-blackpinkinyourarea:backend.lastest
     container_name: python-crawling-server
     volumes: 
       - ./back-end:/home/ubuntu
