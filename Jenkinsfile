@@ -132,7 +132,7 @@ pipeline {
     // updated docker image 태그를 git push 
     stage('Deploy') { 
       steps {
-        sh ("ansible -i /home/ubuntu/prod-ansible/Inventory.ini -m ping prod") 
+        sh "ansible -i /home/ubuntu/prod-ansible/Inventory.ini -m ping prod" 
       } /*
       post {
           failure {
