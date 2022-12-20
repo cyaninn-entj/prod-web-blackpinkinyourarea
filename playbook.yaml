@@ -4,7 +4,7 @@
   remote_user: root
 
   tasks:
-  - name: stop and remove old version container
+  #- name: stop and remove old version container
     #command: "docker ps -q --filter name=web-server | grep -q . && docker stop web-server && docker rm web-server"
     #command: "docker ps -q --filter name=crawling-server | grep -q . && docker stop crawling-server && docker rm crawling-server"
 
