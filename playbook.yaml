@@ -5,7 +5,7 @@
   gather_facts: false
 
   tasks:
-   - name: remove old-version web-server container
+  - name: remove old-version web-server container
       docker_container:
         name: "{{ web-server }}"
         state: absent
