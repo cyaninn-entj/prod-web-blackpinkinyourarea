@@ -5,8 +5,10 @@
   gather_facts: false
 
   tasks:
-  - name: stop and remove old version container
+  - name: stop and remove old version front-end container
     shell: docker stop web-server && docker rm web-server
+    ignore_errors: yes
+  - name: stop and remove old version back-end container
     shell: docker stop crawling-server && docker rm crawling-server
     ignore_errors: yes
 
