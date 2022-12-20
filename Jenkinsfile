@@ -132,7 +132,9 @@ pipeline {
     // updated docker image 태그를 git push 
     stage('Deploy') { 
       steps {
-        sh "ansible prod-web-blackpink -m ping -i Inventory.ini"
+        //sh "ansible prod-web-blackpink -m ping -i Inventory.ini"
+        sh "ansible-playbook playbook.yaml -i Inventory.ini"
+        sh "docker rm $(docker ps -q --filter status=exited)" //빌드에 쓴 종료된 컨테이너 제거
       } /*
       post {
           failure {
