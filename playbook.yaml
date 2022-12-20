@@ -3,7 +3,7 @@
   hosts: prod-web-blackpink
   remote_user: root
   gather_facts: false
-
+#df
   tasks:
   - name: Stop old-version web-server container
     docker_container:
