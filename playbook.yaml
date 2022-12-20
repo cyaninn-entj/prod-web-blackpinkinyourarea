@@ -32,5 +32,3 @@
     command: "docker run -d -it --name web-server -p 80:80 cyaninn/prod-web-blackpinkinyourarea:frontend.latest"
   - name: running python-server
     command: "docker run -d -it --name crawling-server cyaninn/prod-web-blackpinkinyourarea:backend.latest"
-
-이전에 받았던 이미지 지워야함
