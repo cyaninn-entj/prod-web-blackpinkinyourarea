@@ -4,9 +4,9 @@
   remote_user: root
 
   tasks:
-  - name: stop and remove old version container
-    command: "docker ps -q --filter name=web-server | grep -q . && docker stop web-server && docker rm web-server"
-    command: "docker ps -q --filter name=crawling-server | grep -q . && docker stop crawling-server && docker rm crawling-server"
+  #- name: stop and remove old version container
+  #  command: "docker stop web-server && docker rm web-server"
+  #  command: "docker stop crawling-server && docker rm crawling-server"
 
   - name: running web-server
     command: "docker run -d -it --name web-server -p 80:80 cyaninn/prod-web-blackpinkinyourarea:frontend.latest"
