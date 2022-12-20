@@ -6,20 +6,20 @@
 #df
   tasks:
   - name: Stop old-version web-server container
-    docker_container:
+    community.docker.docker_container:
       name: web-server
       state: stopped
   - name: Stop old-version crawling-server container
-    docker_container:
+    community.docker.docker_container:
       name: crawling-server
       state: stopped
 
   - name: remove old-version web-server container
-    docker_container:
+    community.docker.docker_container:
       name: web-server
       state: absent
   - name: remove old-version crawling-server container
-    docker_container:
+    community.docker.docker_container:
       name: crawling-server
       state: absent
 
