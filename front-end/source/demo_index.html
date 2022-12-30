@@ -1,0 +1,187 @@
+<?php
+
+    $arr_images=array();
+    $offset=0;
+
+    function get_images(){
+        require("idpass.php");
+
+        global $arr_images;
+        global $offset;
+
+        $i=0;
+        while($i<48) {
+            $arr_images[$i]=""
+            $i++;
+        }
+
+        //connect 설정(host,user,password)
+        $conn = new mysqli($mysql_host, $mysql_user, $mysql_password, $mysql_db);
+
+        //charset UTF8
+        //mysqli_query("set names utf8");
+
+        //쿼리문 작성
+        $query = "select * from blackpink_img_data where db_year=2022 order by db_month desc, db_day desc limit ".$offset.", 48";
+        $i=$i+48;
+        //쿼리보내고 결과를 변수에 저장
+        $result = mysqli_query($conn, $query);
+        
+        $i=0;
+        if ($result) {
+            while($row = mysqli_fetch_array($result)){
+                $arr_images[$i]=$row['DB_S3URL'];
+                $i++;
+            }//while end
+
+            mysqli_free_result($result); //메모리에서 result 삭제
+        }//if end
+        else {
+            echo "Error : ".mysqli_error($conn);
+        }
+
+        mysqli_close($conn)
+    }
+
+    $arr_index=0;
+    function post_images(){
+        global $arr_index;
+
+        while (true) {
+            if (strlen("$arr_images[$arr_index]")>2) {
+                echo "<div class='col-4'><span class='image fit'><img src='".$arr_images[$arr_index]."' alt='' /></span></div>";
+                $arr_index++;
+            } else {
+                echo "<p>no more images</p>"
+                break;
+            }
+        }
+        
+    }
+?>
+
+<!DOCTYPE HTML>
+<!--
+	Spectral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>BLACKPINK IN YOUR AREA - cyaninn</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="landing is-preload">
+
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+				<!-- Header -->
+					<header id="header" class="alt">
+						<h1><a href="index.html">BLACKPINK IN YOUR AREA</a></h1>
+						<nav id="nav">
+							<ul>
+								<li class="special">
+									<a href="#menu" class="menuToggle"><span>Menu</span></a>
+									<div id="menu">
+										<ul>
+											<li><a href="index.html">Home</a></li>
+											<li><a href="generic.html">INFO</a></li>
+											<li><a href="https://www.instagram.com/jennierubyjane/">@JENNIE</a></li>
+											<li><a href="https://www.instagram.com/lalalalisa_m/">@LISA</a></li>
+											<li><a href="https://www.instagram.com/sooyaaa__/">@JISOO</a></li>
+											<li><a href="https://www.instagram.com/roses_are_rosie/">@ROSÉ</a></li>
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Banner -->
+					<section id="banner">
+						<div class="inner">
+							<h2>BLACKPINK IN YOUR AREA</h2>
+							<p>World no.1 K-pop group 
+								 <a href="https://www.youtube.com/channel/UCOmHUn--16B90oW2L6FRR3A">BLACKPINK</a>.</p>
+					<!-- 	<ul class="actions special">
+								<li><a href="#" class="button primary">누르지마시오</a></li>
+							</ul> -->
+						</div>
+						<a href="#one" class="more scrolly">Learn More</a>
+					</section>
+
+				<!-- One -->
+					<section id="one" class="wrapper style1 special">
+						<div class="inner">
+							<header class="major">
+								<h2>THIS WEBSITE IS</h2>
+								<p>This is a site that collects the latest Instagram photos of Blackpink members.<br />
+								</p>
+							</header>
+						</div>
+					</section>
+
+				<!-- Three -->
+					<section id="three" class="wrapper style3 special">
+						<div class="inner">
+							<header class="major">
+								<h2>Notice</h2>
+								<p>Images are read from the server at 11pm every day, <br />
+								and are not reflected on the website until around midnight</p>
+							</header>
+							<div class="box alt">
+								<div class="row gtr-50 gtr-uniform">
+                                    <?php
+                                        get_images();
+                                        post_images();
+                                    ?>
+								</div>
+							</div>
+						</div>
+					</section>
+
+				<!-- CTA
+					<section id="cta" class="wrapper style4">
+						<div class="inner">
+							<header>
+								<h2>Arcue ut vel commodo</h2>
+								<p>Aliquam ut ex ut augue consectetur interdum endrerit imperdiet amet eleifend fringilla.</p>
+							</header>
+							<ul class="actions stacked">
+								<li><a href="#" class="button fit primary">Activate</a></li>
+								<li><a href="#" class="button fit">Learn More</a></li>
+							</ul>
+						</div>
+					</section> -->
+
+				<!-- Footer -->
+					<footer id="footer">
+						<ul class="icons">
+							<!--<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>-->
+							<!--<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>-->
+							<li><a href="https://www.instagram.com/cyaninn_entj/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="https://github.com/cyanindy/web-blackpinkinyourarea" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
+							<li><a href="sounddevice3@gmail.com" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+						</ul>
+						<ul class="copyright">
+							<li>&copy; jocoding</li><li>developed: <a href="https://yeonwoo97.tistory.com/">cyaninn</a></li>
+						</ul>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

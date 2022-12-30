@@ -1,15 +1,19 @@
 <?php
-    $arr = array("a", "b", "c", "d", "e" "f" "g" "h");
-    $i=0
+    $arr = array("a", "b", "c", "d", "e", "f", "g", "h");
+    $i=0;
 
     function one(){
-        if ($i>8) {
+        global $i;
+        global $arr;
+        echo $i;
+        if ($i>=8) {
             echo "<p>no more index</p>";
+            $i=0;
         }
         else {
-            $j=0
+            $j=0;
             while($j<4) {
-                echo "<p> the alpabat : ".$arr[i]." this time</p>";
+                echo "<p> the alpabat : ".$arr[$i]." this time</p>";
                 $j++;
                 $i++;
             }
