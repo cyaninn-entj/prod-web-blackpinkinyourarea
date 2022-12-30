@@ -3,17 +3,11 @@
     $arr_images=array();
     $offset=0;
 
-    function get_images(){
+    function get_images($member, $offset_value) {
         require("idpass.php");
 
         global $arr_images;
         global $offset;
-
-        $i=0;
-        while($i<48) {
-            $arr_images[$i]=""
-            $i++;
-        }
 
         //connect 설정(host,user,password)
         $conn = new mysqli($mysql_host, $mysql_user, $mysql_password, $mysql_db);
@@ -22,11 +16,24 @@
         //mysqli_query("set names utf8");
 
         //쿼리문 작성
-        $query = "select * from blackpink_img_data where db_year=2022 order by db_month desc, db_day desc limit ".$offset.", 48";
-        $i=$i+48;
+        if ($member=="all") {
+            $query = "select * from blackpink_img_data where db_year=2022 order by db_month desc, db_day desc limit ".$offset_value.", 48";
+        } else {
+            $query = "select * from blackpink_img_data where db_year=2022 and db_members=".$member." order by db_month desc, db_day desc limit ".$offset_value.", 48";
+        }
+        $offset=$offset_value+48;
+        
         //쿼리보내고 결과를 변수에 저장
         $result = mysqli_query($conn, $query);
+
+        //이미지 배열 초기화
+        $i=0;
+        while($i<48) {
+            $arr_images[$i]="";
+            $i++;
+        }
         
+        //이미지 배열에 쿼리 결과 url 입력
         $i=0;
         if ($result) {
             while($row = mysqli_fetch_array($result)){
@@ -40,23 +47,35 @@
             echo "Error : ".mysqli_error($conn);
         }
 
-        mysqli_close($conn)
+        mysqli_close($conn);
     }
 
     $arr_index=0;
-    function post_images(){
+    function post_images() {
         global $arr_index;
+        global $arr_images;
+        global $offset;
 
+        if ($arr_index==48) {
+            get_images("all", $offset);
+            $arr_index=0;
+        }
+        
+        $j=0;
         while (true) {
-            if (strlen("$arr_images[$arr_index]")>2) {
-                echo "<div class='col-4'><span class='image fit'><img src='".$arr_images[$arr_index]."' alt='' /></span></div>";
-                $arr_index++;
+            if ($j<12) {
+                if (strlen("$arr_images[$arr_index]")>2) {
+                    echo "<div class='col-4'><span class='image fit'><img src='".$arr_images[$arr_index]."' alt='' /></span></div>";
+                    $arr_index++;
+                } else {
+                    echo "<p>no more images</p>";
+                    break;
+                }
+                $j++;
             } else {
-                echo "<p>no more images</p>"
                 break;
             }
         }
-        
     }
 ?>
 
@@ -136,7 +155,7 @@
 							<div class="box alt">
 								<div class="row gtr-50 gtr-uniform">
                                     <?php
-                                        get_images();
+                                        get_images("all", 0);
                                         post_images();
                                     ?>
 								</div>
