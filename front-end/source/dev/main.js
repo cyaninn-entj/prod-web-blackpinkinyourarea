@@ -1,3 +1,7 @@
+var loading = false;    //중복실행여부 확인 변수
+var page = 1;   //불러올 페이지
+
+/*
 $(document).ready(function() {
     var win = $(window);
   
@@ -17,16 +21,17 @@ $(document).ready(function() {
             $('#loading').hide();
           }
         });
-        */
+        
   
         $('#posts').append(randomPost());
         $('#loading').hide();
       }
     });
   });
-  
-  // Generate a random post
-  function randomPost() {
+*/
+
+// Generate a random post
+function randomPost() {
     // Paragraphs that will appear in the post
     var paragraphs = [
       '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae suscipit arcu. Praesent pretium orci neque, non egestas massa suscipit non. In urna ligula, pretium ac magna in, consectetur venenatis dui. Etiam id commodo neque, vel semper nunc. Vivamus porttitor condimentum pulvinar. Quisque et consequat mi. Suspendisse luctus, quam in dapibus venenatis, velit erat malesuada lacus, dapibus tincidunt neque ex vitae leo. Suspendisse fermentum sit amet urna eu dignissim. Curabitur vel nibh quis justo volutpat porttitor et tempus sem.</p>',
@@ -55,4 +60,21 @@ $(document).ready(function() {
     post += '</li>';
   
     return post;
-  }
+}
+
+$(window).scroll(function(){
+    if($(window).scrollTop()+200>=$(document).height() - $(window).height())
+    {
+        if(!loading)    //실행 가능 상태라면?
+        {
+            loading = true; //실행 불가능 상태로 변경
+            $('#posts').append(randomPost());
+            $('#loading').hide();
+            loading = false;
+        }
+        else            //실행 불가능 상태라면?
+        {
+            alert('다음페이지를 로딩중입니다.');  
+        }
+    }
+});
