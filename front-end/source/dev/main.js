@@ -6,7 +6,8 @@ $(document).ready(function() {
       // End of the document reached?
       if ($(document).height() - win.height() == win.scrollTop()) {
         $('#loading').show();
-  
+        
+        /*
         // Uncomment this AJAX call to test it
         $.ajax({
           url: 'get-post.php',
@@ -16,7 +17,7 @@ $(document).ready(function() {
             $('#loading').hide();
           }
         });
-        
+        */
   
         $('#posts').append(randomPost());
         $('#loading').hide();
@@ -44,7 +45,7 @@ $(document).ready(function() {
       paragraphs[i] = paragraphs[j];
       paragraphs[j] = p;
     }
-  
+    
     // Generate the post
     var post = '<li>';
     post += '<article>';
