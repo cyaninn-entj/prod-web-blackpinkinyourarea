@@ -1,7 +1,7 @@
 var loading = false;    //중복실행여부 확인 변수
 var page = 1;   //불러올 페이지
 
-/*
+
 $(document).ready(function() {
     var win = $(window);
   
@@ -20,7 +20,7 @@ $(document).ready(function() {
             $('#posts').append(html);
             $('#loading').hide();
           }
-        });
+        }); */
         
   
         $('#posts').append(randomPost());
@@ -28,7 +28,7 @@ $(document).ready(function() {
       }
     });
   });
-*/
+
 
 // Generate a random post
 function randomPost() {
@@ -62,6 +62,7 @@ function randomPost() {
     return post;
 }
 
+/*
 $(window).scroll(function(){
     if($(window).scrollTop()+200>=$(document).height() - $(window).height())
     {
@@ -77,4 +78,4 @@ $(window).scroll(function(){
             alert('다음페이지를 로딩중입니다.');  
         }
     }
-});
+}); */
