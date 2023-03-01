@@ -7,6 +7,7 @@ $(document).ready(function() {
   
     // Each time the user scrolls
     win.scroll(function() {
+      $('#loading').hide();
       // End of the document reached?
       if ($(document).height() - win.height() == win.scrollTop()) {
         $('#loading').show();
@@ -30,6 +31,7 @@ $(document).ready(function() {
   });
 
 
+var pagenum=1;
 // Generate a random post
 function randomPost() {
     // Paragraphs that will appear in the post
@@ -56,6 +58,7 @@ function randomPost() {
     post += '<article>';
     post += '<header><h1>Random Article!</h1></header>';
     post += paragraphs.join('');
+    post += '<p>'+string(pagenum)+'</p>';
     post += '</article>';
     post += '</li>';
   
